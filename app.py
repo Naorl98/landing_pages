@@ -8,16 +8,14 @@ class LandingPageApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Landing Page Creator")
-        self.root.geometry("680x780")
-        self.root.configure(bg="#1a1a1a")  # Soft black background
+        self.root.geometry("700x850")
+        self.root.configure(bg="#1a1a1a")  # Dark background
 
         style = ttk.Style()
         style.theme_use("clam")
-        style.configure("TLabel",  foreground="black", font=("Segoe UI", 10))
-        style.configure("TButton", font=("Segoe UI", 10, "bold"), padding=6, background="#007acc", foreground="white")
-        style.map("TButton",
-                  foreground=[("active", "white")],
-                  background=[("active", "#005b99")])
+        style.configure("TLabel", foreground="black", font=("Segoe UI", 11))
+        style.configure("TButton", font=("Segoe UI", 11, "bold"), padding=6, background="#007acc", foreground="white")
+        style.map("TButton", background=[("active", "#005b99")])
         style.configure("TEntry", padding=6)
         style.configure("TCombobox", padding=6)
 
@@ -27,72 +25,79 @@ class LandingPageApp:
         self.desc_var = tk.StringVar()
         self.email_var = tk.StringVar()
         self.phone_var = tk.StringVar()
-        self.link_vars = [tk.StringVar() for _ in range(3)]
         self.bg_image_path = tk.StringVar()
         self.logo_image_path = tk.StringVar()
         self.logo_position_var = tk.StringVar(value="none")
+
+        self.link_frames = []  # List to hold frames with title and link vars
 
         self.setup_ui()
 
     def setup_ui(self):
         padding = {'padx': 10, 'pady': 6}
 
-        # Title
-        title_label = tk.Label(
-            self.root, text="Landing Page Builder",
-            font=("Segoe UI", 18, "bold"),
-            bg="#1a1a1a", fg="white"
-        )
-        title_label.pack(pady=(25, 10))
+        tk.Label(self.root, text="Landing Page Builder", font=("Segoe UI", 20, "bold"), bg="#1a1a1a", fg="white").pack(pady=(20, 10))
 
-        # Form
         form = ttk.Frame(self.root)
         form.pack(padx=25, pady=10, fill="both", expand=True)
 
-        def form_row(row, label, widget):
+        def add_form_row(row, label, widget):
             ttk.Label(form, text=label).grid(row=row, column=0, sticky="w", **padding)
             widget.grid(row=row, column=1, columnspan=2, sticky="ew", **padding)
 
         form.columnconfigure(1, weight=1)
 
         row = 0
-        form_row(row, "Template:", ttk.Combobox(form, textvariable=self.template_var, values=get_templates(), width=46))
+        add_form_row(row, "Template:", ttk.Combobox(form, textvariable=self.template_var, values=get_templates(), width=48))
         row += 1
-        form_row(row, "Color Theme:", ttk.Combobox(form, textvariable=self.theme_var, values=get_themes(), width=46))
+        add_form_row(row, "Color Theme:", ttk.Combobox(form, textvariable=self.theme_var, values=get_themes(), width=48))
         row += 1
-        form_row(row, "Page Title:", ttk.Entry(form, textvariable=self.title_var, width=48))
+        add_form_row(row, "Page Title:", ttk.Entry(form, textvariable=self.title_var, width=50))
         row += 1
-        form_row(row, "Description:", ttk.Entry(form, textvariable=self.desc_var, width=48))
+        add_form_row(row, "Description:", ttk.Entry(form, textvariable=self.desc_var, width=50))
         row += 1
-        form_row(row, "Email:", ttk.Entry(form, textvariable=self.email_var, width=48))
+        add_form_row(row, "Email:", ttk.Entry(form, textvariable=self.email_var, width=50))
         row += 1
-        form_row(row, "Phone:", ttk.Entry(form, textvariable=self.phone_var, width=48))
+        add_form_row(row, "Phone:", ttk.Entry(form, textvariable=self.phone_var, width=50))
 
-        for i in range(3):
-            row += 1
-            form_row(row, f"Link {i+1}:", ttk.Entry(form, textvariable=self.link_vars[i], width=48))
+        row += 1
+        ttk.Label(form, text="Links (Add multiple):").grid(row=row, column=0, sticky="w", **padding)
+        self.links_container = ttk.Frame(form)
+        self.links_container.grid(row=row, column=1, columnspan=2, sticky="nsew", **padding)
 
-        # Background Image Upload
+        self.add_link_field()  # Add first link field
+
+        row += 1
+        ttk.Button(form, text="+ Add Link", command=self.add_link_field).grid(row=row, column=1, sticky="w", **padding)
+
         row += 1
         ttk.Label(form, text="Background Image:").grid(row=row, column=0, sticky="w", **padding)
-        ttk.Entry(form, textvariable=self.bg_image_path, width=35).grid(row=row, column=1, **padding)
+        ttk.Entry(form, textvariable=self.bg_image_path, width=36).grid(row=row, column=1, **padding)
         ttk.Button(form, text="Browse", command=self.browse_bg_image).grid(row=row, column=2, **padding)
 
-        # Logo Image Upload
         row += 1
         ttk.Label(form, text="Logo Image:").grid(row=row, column=0, sticky="w", **padding)
-        ttk.Entry(form, textvariable=self.logo_image_path, width=35).grid(row=row, column=1, **padding)
+        ttk.Entry(form, textvariable=self.logo_image_path, width=36).grid(row=row, column=1, **padding)
         ttk.Button(form, text="Browse", command=self.browse_logo_image).grid(row=row, column=2, **padding)
 
-        # Logo Position
         row += 1
-        form_row(row, "Logo Position:", ttk.Combobox(form, textvariable=self.logo_position_var,
-                                                      values=["none", "left-up", "right-up", "middle", "left-down", "right-down"], width=46))
+        add_form_row(row, "Logo Position:", ttk.Combobox(form, textvariable=self.logo_position_var,
+                                                          values=["none", "top-left", "top-right", "middle", "bottom-left", "bottom-right"], width=48))
 
-        # Action Buttons
         row += 1
-        ttk.Button(form, text="Generate", command=self.generate).grid(row=row, column=1, sticky="e", **padding)
+        ttk.Button(form, text="Generate Page", command=self.generate).grid(row=row, column=1, sticky="e", **padding)
         ttk.Button(form, text="Preview", command=self.preview).grid(row=row, column=2, sticky="w", **padding)
+
+    def add_link_field(self):
+        frame = ttk.Frame(self.links_container)
+        title_var = tk.StringVar()
+        url_var = tk.StringVar()
+
+        ttk.Entry(frame, textvariable=title_var, width=20).pack(side="left", padx=(0, 5))
+        ttk.Entry(frame, textvariable=url_var, width=30).pack(side="left")
+
+        frame.pack(pady=2, anchor="w")
+        self.link_frames.append((title_var, url_var))
 
     def browse_bg_image(self):
         path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg")])
@@ -105,12 +110,19 @@ class LandingPageApp:
             self.logo_image_path.set(path)
 
     def generate(self):
+        links = []
+        for title_var, url_var in self.link_frames:
+            link = url_var.get().strip()
+            title = title_var.get().strip()
+            if link:
+                links.append({"url": link, "title": title})
+
         data = {
             "title": self.title_var.get(),
             "description": self.desc_var.get(),
             "email": self.email_var.get(),
             "phone": self.phone_var.get(),
-            "links": [link.get() for link in self.link_vars if link.get()],
+            "links": links,
             "theme": self.theme_var.get(),
             "background_image": self.bg_image_path.get(),
             "logo_image": self.logo_image_path.get(),
