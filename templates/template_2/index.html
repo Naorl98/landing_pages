@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: linear-gradient(to right, #f9f6f0, #fbeee0);
+      color: #333;
+      padding: 0;
+      margin: 0;
+    }
+    header {
+      background: background: {% if background_image %}
+              url('{{ background_image }}') no-repeat center center fixed;
+            {% else %}
+              url('{{ background_image }}') no-repeat center center fixed
+            {% endif %};
+background-size: cover;
+
+      background-color: {{ theme.primary or '#e67e22' }};
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+    .content {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .content p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+    .link-block {
+      margin-top: 20px;
+    }
+    .link-block a {
+      display: block;
+      background-color: #fef4e5;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 10px 0;
+      text-decoration: none;
+      color: {{ theme.link or '#e67e22' }};
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .link-block a:hover {
+      background-color: #ffe2c4;
+    }
+    footer {
+      margin-top: 60px;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ LOGO HANDLING -->
+  {% if logo_image and logo_position != 'none' %}
+    <img src="{{ logo_image }}" alt="Logo" style="
+      position: absolute;
+      {% if logo_position == 'left-up' %}top: 20px; left: 20px;
+      {% elif logo_position == 'right-up' %}top: 20px; right: 20px;
+      {% elif logo_position == 'middle' %}top: 20px; left: 50%; transform: translateX(-50%);
+      {% elif logo_position == 'left-down' %}bottom: 20px; left: 20px;
+      {% elif logo_position == 'right-down' %}bottom: 20px; right: 20px;
+      {% endif %}
+      width: 100px;
+      z-index: 10;
+    "/>
+  {% endif %}
+
+<header>
+  <h1>{{ title }}</h1>
+  <p>{{ description }}</p>
+</header>
+
+<div class="content">
+  {% if links %}
+    <div class="link-block">
+      {% for link in links %}
+        <a href="{{ link }}" target="_blank">{{ link }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <footer>
+    <p>Contact us: {{ email }} | {{ phone }}</p>
+  </footer>
+</div>
+
+</body>
+</html>

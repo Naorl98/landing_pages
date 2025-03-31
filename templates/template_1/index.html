@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background: {% if background_image %}
+              url('{{ background_image }}') no-repeat center center fixed;
+            {% else %}
+              url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed
+            {% endif %};
+      background-size: cover;
+      color: white;
+      padding: 20px;
+    }
+    .overlay {
+
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 50px 30px;
+      border-radius: 10px;
+      max-width: 800px;
+      margin: 50px auto;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    p.description {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .buttons a {
+      background-color: {{ theme.primary or '#3498db' }};
+      color: white;
+      text-decoration: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      margin: 0 10px;
+      display: inline-block;
+    }
+    .contact {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 1rem;
+    }
+    .link-section {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .link-section a {
+      display: block;
+      margin: 5px 0;
+      color: {{ theme.link or '#66ccff' }};
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ LOGO HANDLING -->
+  {% if logo_image and logo_position != 'none' %}
+    <img src="{{ logo_image }}" alt="Logo" style="
+      position: absolute;
+      {% if logo_position == 'left-up' %}top: 20px; left: 20px;
+      {% elif logo_position == 'right-up' %}top: 20px; right: 20px;
+      {% elif logo_position == 'middle' %}top: 20px; left: 50%; transform: translateX(-50%);
+      {% elif logo_position == 'left-down' %}bottom: 20px; left: 20px;
+      {% elif logo_position == 'right-down' %}bottom: 20px; right: 20px;
+      {% endif %}
+      width: 100px;
+      z-index: 10;
+    "/>
+  {% endif %}
+
+  <div class="overlay">
+    <h1>{{ title }}</h1>
+    <p class="description">{{ description }}</p>
+
+    <div class="buttons" style="text-align: center;">
+      <a href="#">Get Started</a>
+      <a href="#">Learn More</a>
+    </div>
+
+    {% if links %}
+    <div class="link-section">
+      {% for link in links %}
+        <a href="{{ link }}" target="_blank">{{ link }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="contact">
+      <p>Contact us: {{ email }} | {{ phone }}</p>
+    </div>
+  </div>
+</body>
+</html>

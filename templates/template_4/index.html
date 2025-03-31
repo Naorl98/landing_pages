@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background:{% if background_image %}
+              url('{{ background_image }}') no-repeat center center fixed;
+            {% else %}
+ url('https://images.unsplash.com/photo-1508672019048-805c876b67e2') no-repeat center center fixed;            {% endif %};
+
+      background-size: cover;
+      color: white;
+      text-align: center;
+      padding: 0;
+    }
+
+    .overlay {
+      background: url('{{ background_image }}');
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 60px 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 3.5em;
+      margin-bottom: 20px;
+    }
+
+    p.description {
+      font-size: 1.3em;
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 40px auto;
+    }
+
+    .gallery img {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .contact {
+      margin-top: 60px;
+      font-size: 1.1em;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #cccccc;
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ✅ LOGO HANDLING -->
+  {% if logo_image and logo_position != 'none' %}
+    <img src="{{ logo_image }}" alt="Logo" style="
+      position: absolute;
+      {% if logo_position == 'left-up' %}top: 20px; left: 20px;
+      {% elif logo_position == 'right-up' %}top: 20px; right: 20px;
+      {% elif logo_position == 'middle' %}top: 20px; left: 50%; transform: translateX(-50%);
+      {% elif logo_position == 'left-down' %}bottom: 20px; left: 20px;
+      {% elif logo_position == 'right-down' %}bottom: 20px; right: 20px;
+      {% endif %}
+      width: 100px;
+      z-index: 10;
+    "/>
+  {% endif %}
+
+  <div class="overlay">
+    <h1>{{ title }}</h1>
+    <p class="description">{{ description }}</p>
+
+    <div class="gallery">
+      {% for link in links %}
+        <img src="{{ link }}" alt="Portfolio image">
+      {% endfor %}
+    </div>
+
+    <div class="contact">
+      <p>Email: {{ email }}</p>
+      <p>Phone: {{ phone }}</p>
+    </div>
+
+    <footer>
+      <p>&copy; {{ title }} – All rights reserved</p>
+    </footer>
+  </div>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

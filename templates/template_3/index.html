@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background:{% if background_image %}
+              url('{{ background_image }}') no-repeat center center fixed;
+            {% else %}
+              linear-gradient(120deg, #ff69b4, #ffd1dc);
+            {% endif %};
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2em;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+    }
+
+    .social-icons {
+      margin: 30px 0;
+    }
+
+    .social-icons a {
+      margin: 0 10px;
+      display: inline-block;
+      text-decoration: none;
+      font-size: 1.1em;
+      padding: 12px 20px;
+      background: #fff;
+      color: #ff69b4;
+      border-radius: 30px;
+      transition: background 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background: #ffe3f0;
+    }
+
+    .cta {
+      margin-top: 30px;
+    }
+
+    .cta a {
+      background-color: #fff;
+      color: #ff69b4;
+      padding: 14px 32px;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1em;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #ffeaf2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ LOGO HANDLING -->
+  {% if logo_image and logo_position != 'none' %}
+    <img src="{{ logo_image }}" alt="Logo" style="
+      position: absolute;
+      {% if logo_position == 'left-up' %}top: 20px; left: 20px;
+      {% elif logo_position == 'right-up' %}top: 20px; right: 20px;
+      {% elif logo_position == 'middle' %}top: 20px; left: 50%; transform: translateX(-50%);
+      {% elif logo_position == 'left-down' %}bottom: 20px; left: 20px;
+      {% elif logo_position == 'right-down' %}bottom: 20px; right: 20px;
+      {% endif %}
+      width: 100px;
+      z-index: 10;
+    "/>
+  {% endif %}
+
+  <h1>{{ title }}</h1>
+  <p>{{ description }}</p>
+
+  <div class="social-icons">
+    {% for link in links %}
+      <a href="{{ link }}" target="_blank">{{ link }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="cta">
+    <a href="#">Follow Me</a>
+  </div>
+
+  <footer>
+    <p>Contact me at: {{ email }} | {{ phone }}</p>
+  </footer>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>
