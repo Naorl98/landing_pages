@@ -8,7 +8,7 @@ class LandingPageApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Landing Page Creator")
-        self.root.geometry("700x900")
+        self.root.geometry("720x1100")
         self.root.configure(bg="#1a1a1a")
 
         style = ttk.Style()
@@ -29,6 +29,7 @@ class LandingPageApp:
         self.logo_position_var = tk.StringVar(value="none")
 
         self.link_frames = []
+        self.gallery_data = []
 
         self.setup_ui()
 
@@ -47,7 +48,10 @@ class LandingPageApp:
         form.columnconfigure(1, weight=1)
 
         row = 0
-        add_form_row(row, "Template:", ttk.Combobox(form, textvariable=self.template_var, values=get_templates(), width=48))
+        template_combo = ttk.Combobox(form, textvariable=self.template_var, values=get_templates(), width=48)
+        template_combo.bind("<<ComboboxSelected>>", self.on_template_change)
+        add_form_row(row, "Template:", template_combo)
+
         row += 1
         add_form_row(row, "Color Theme:", ttk.Combobox(form, textvariable=self.theme_var, values=get_themes(), width=48))
         row += 1
@@ -87,17 +91,32 @@ class LandingPageApp:
                                                           values=["none", "top-left", "top-right", "middle", "bottom-left", "bottom-right"], width=48))
 
         row += 1
+        self.gallery_frame = ttk.Frame(form)
+        self.gallery_frame.grid(row=row, column=0, columnspan=3, sticky="ew", **padding)
+        self.gallery_frame.grid_remove()
+        ttk.Label(self.gallery_frame, text="Gallery Images (Photographer only):").grid(row=0, column=0, sticky="w")
+        ttk.Button(self.gallery_frame, text="Add Images with Captions", command=self.browse_gallery_images).grid(row=0, column=1, padx=5)
+        self.gallery_listbox = tk.Listbox(self.gallery_frame, height=6, width=50)
+        self.gallery_listbox.grid(row=1, column=0, columnspan=3, sticky="ew", pady=5)
+
+        row += 1
         ttk.Button(form, text="Generate Page", command=self.generate).grid(row=row, column=1, sticky="e", **padding)
         ttk.Button(form, text="Preview", command=self.preview).grid(row=row, column=2, sticky="w", **padding)
+
+    def on_template_change(self, event=None):
+        if self.template_var.get() == "photographer_gallery":
+            self.gallery_frame.grid()
+        else:
+            self.gallery_frame.grid_remove()
+            self.gallery_data = []
+            self.gallery_listbox.delete(0, tk.END)
 
     def add_link_field(self):
         frame = ttk.Frame(self.links_container)
         title_var = tk.StringVar()
         url_var = tk.StringVar()
-
         ttk.Entry(frame, textvariable=title_var, width=20).pack(side="left", padx=(0, 5))
         ttk.Entry(frame, textvariable=url_var, width=30).pack(side="left")
-
         frame.pack(pady=2, anchor="w")
         self.link_frames.append((title_var, url_var))
 
@@ -110,6 +129,13 @@ class LandingPageApp:
         path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg")])
         if path:
             self.logo_image_path.set(path)
+
+    def browse_gallery_images(self):
+        files = filedialog.askopenfilenames(filetypes=[("Image Files", "*.png *.jpg *.jpeg")])
+        for file in files:
+            caption = tk.simpledialog.askstring("Caption", f"Enter caption for {os.path.basename(file)}:")
+            self.gallery_data.append({"path": file, "caption": caption or ""})
+            self.gallery_listbox.insert(tk.END, f"{os.path.basename(file)} - {caption}")
 
     def generate(self):
         links = []
@@ -128,7 +154,8 @@ class LandingPageApp:
             "theme": self.theme_var.get(),
             "background_image": self.bg_image_path.get(),
             "logo_image": self.logo_image_path.get(),
-            "logo_position": self.logo_position_var.get()
+            "logo_position": self.logo_position_var.get(),
+            "gallery_images": self.gallery_data
         }
 
         template = self.template_var.get()

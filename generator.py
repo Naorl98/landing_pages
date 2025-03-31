@@ -19,25 +19,46 @@ def generate_landing_page(template_name, data):
         description=data.get("description"),
         email=data.get("email"),
         phone=data.get("phone"),
-        links=data.get("links", []),  # each link is a dict: { "url": ..., "title": ... }
+        links=data.get("links", []),
         theme=data.get("theme"),
         background_image=data.get("background_image"),
         logo_image=data.get("logo_image"),
-        logo_position=data.get("logo_position")
+        logo_position=data.get("logo_position"),
+        gallery_images=[]
     )
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     output_dir = os.path.join("output", f"landing_{timestamp}")
     os.makedirs(output_dir, exist_ok=True)
 
+    gallery_data = []
+    if data.get("gallery_images"):
+        gallery_dir = os.path.join(output_dir, "gallery")
+        os.makedirs(gallery_dir, exist_ok=True)
+        for i, item in enumerate(data["gallery_images"]):
+            src = item.get("path")
+            caption = item.get("caption", "")
+            ext = os.path.splitext(src)[1]
+            dest_filename = f"image_{i+1}{ext}"
+            dest_path = os.path.join(gallery_dir, dest_filename)
+            shutil.copy(src, dest_path)
+            gallery_data.append({"img": f"gallery/{dest_filename}", "caption": caption})
+
+        output_html = template.render(
+            title=data.get("title"),
+            description=data.get("description"),
+            email=data.get("email"),
+            phone=data.get("phone"),
+            links=data.get("links", []),
+            theme=data.get("theme"),
+            background_image=data.get("background_image"),
+            logo_image=data.get("logo_image"),
+            logo_position=data.get("logo_position"),
+            gallery_images=gallery_data
+        )
+
     index_path = os.path.join(output_dir, "index.html")
     with open(index_path, "w", encoding="utf-8") as f:
         f.write(output_html)
-
-    # Copy static files (optional)
-    static_src = os.path.join("templates", template_name, "assets")
-    static_dst = os.path.join(output_dir, "assets")
-    if os.path.exists(static_src):
-        shutil.copytree(static_src, static_dst)
 
     return index_path
