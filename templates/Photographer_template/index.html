@@ -1,40 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ title }}</title>
   <style>
-    body, html { margin:0; padding:0; font-family: 'Segoe UI', sans-serif;
-      background: url('{{ background_image }}') center/cover no-repeat; color: #ffffff; }
-    body::before { content:""; position:fixed; inset:0; background: rgba(0,0,0,0.5); z-index:0; }
-    .main { position: relative; z-index:1; display:flex; flex-direction:column;
-            justify-content:center; align-items:center; min-height:100vh; text-align:center; padding: 20px; }
-    .logo { position: absolute; }
-    .logo img { max-width: 100px; border-radius: 5px; }
-    .logo.top-left { top:10px; left:10px; }
-    .logo.top-right { top:10px; right:10px; }
-    .logo.bottom-left { bottom:10px; left:10px; }
-    .logo.bottom-right { bottom:10px; right:10px; }
-    .logo.center { top:10px; left:50%; transform: translateX(-50%); }
-    .logo.none { display:none; }
-    h1 { font-size: 3em; margin: 0.2em 0; }
-    p.description { font-size: 1.2em; max-width: 600px; margin: 0.5em auto 1em; }
-    .links a { color: #fff; text-decoration: none; margin: 0 8px; border-bottom: 1px solid #fff; }
-    .contact { margin-top: 1em; font-size: 0.95em; }
-    .contact a { color: #fff; text-decoration: none; }
+    :root {
+      --accent: #66ccff;
+      --text: #ffffff;
+      --bg-overlay: rgba(0, 0, 0, 0.6);
+      --card-bg: rgba(255, 255, 255, 0.07);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('{{ background_image }}') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: var(--bg-overlay);
+      z-index: 0;
+    }
+
+    .fade-in {
+      animation: fadeInUp 1s ease-out both;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      position: absolute;
+    }
+
+    .logo img {
+      max-width: 120px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .logo.top-left    { top: 20px; left: 20px; }
+    .logo.top-right   { top: 20px; right: 20px; }
+    .logo.middle      { top: 20px; left: 50%; transform: translateX(-50%); }
+    .logo.bottom-left { bottom: 20px; left: 20px; }
+    .logo.bottom-right{ bottom: 20px; right: 20px; }
+    .logo.none        { display: none; }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      text-shadow: 0 0 6px rgba(102, 204, 255, 0.4);
+    }
+
+    .description {
+      font-size: 1.3rem;
+      max-width: 800px;
+      margin-bottom: 40px;
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 14px;
+      backdrop-filter: blur(6px);
+      white-space: pre-line;
+      line-height: 1.6;
+      box-shadow: 0 0 12px rgba(102, 204, 255, 0.2);
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 40px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .link-block {
+      background: var(--card-bg);
+      padding: 18px;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .link-block:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .link-block .link-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .link-block a {
+      color: var(--text);
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1rem;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .contact {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 1.1rem;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 360px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 10px rgba(102, 204, 255, 0.2);
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .contact span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
   </style>
 </head>
 <body>
-  <div class="logo {{ logo_position }}"><img src="{{ logo_image }}" alt="Logo"></div>
-  <div class="main">
+
+  <div class="logo {{ logo_position }}">
+    <img src="{{ logo_image }}" alt="Logo" />
+  </div>
+
+  <div class="container fade-in">
     <h1>{{ title }}</h1>
     <p class="description">{{ description }}</p>
-    <div class="links">{{ links }}</div>
+
+    <div class="links">
+      {% for link in links %}
+        <div class="link-block">
+          {% if link.title %}
+            <div class="link-title">{{ link.title }}</div>
+          {% endif %}
+          <a href="{{ link.url }}" target="_blank">{{ link.url }}</a>
+        </div>
+      {% endfor %}
+    </div>
+
     <div class="contact">
-      <p>Email: <a href="mailto:{{ email }}">{{ email }}</a></p>
-      <p>Phone: <a href="tel:{{ phone }}">{{ phone }}</a></p>
+      <span>📧 <a href="mailto:{{ email }}">{{ email }}</a></span>
+      <span>📞 <a href="tel:{{ phone }}">{{ phone }}</a></span>
     </div>
   </div>
+
 </body>
 </html>

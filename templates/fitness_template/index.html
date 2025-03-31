@@ -48,6 +48,7 @@
     .logo img {
       max-width: 120px;
       border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
     }
 
     .logo.top-left    { top: 20px; left: 20px; }
@@ -64,13 +65,15 @@
     }
 
     .description {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       max-width: 800px;
       margin-bottom: 40px;
       background: var(--card-bg);
       padding: 24px;
       border-radius: 14px;
       backdrop-filter: blur(6px);
+      white-space: pre-line;
+      line-height: 1.6;
     }
 
     .links {
@@ -87,6 +90,12 @@
       padding: 18px;
       border-radius: 12px;
       backdrop-filter: blur(4px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .link-block:hover {
+      transform: scale(1.025);
+      box-shadow: 0 0 12px var(--accent);
     }
 
     .link-block .link-title {
@@ -116,6 +125,7 @@
       border-radius: 12px;
       max-width: 360px;
       backdrop-filter: blur(4px);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
     }
 
     .contact a {

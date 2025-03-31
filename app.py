@@ -8,8 +8,8 @@ class LandingPageApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Landing Page Creator")
-        self.root.geometry("700x850")
-        self.root.configure(bg="#1a1a1a")  # Dark background
+        self.root.geometry("700x900")
+        self.root.configure(bg="#1a1a1a")
 
         style = ttk.Style()
         style.theme_use("clam")
@@ -22,14 +22,13 @@ class LandingPageApp:
         self.template_var = tk.StringVar()
         self.theme_var = tk.StringVar()
         self.title_var = tk.StringVar()
-        self.desc_var = tk.StringVar()
         self.email_var = tk.StringVar()
         self.phone_var = tk.StringVar()
         self.bg_image_path = tk.StringVar()
         self.logo_image_path = tk.StringVar()
         self.logo_position_var = tk.StringVar(value="none")
 
-        self.link_frames = []  # List to hold frames with title and link vars
+        self.link_frames = []
 
         self.setup_ui()
 
@@ -53,8 +52,12 @@ class LandingPageApp:
         add_form_row(row, "Color Theme:", ttk.Combobox(form, textvariable=self.theme_var, values=get_themes(), width=48))
         row += 1
         add_form_row(row, "Page Title:", ttk.Entry(form, textvariable=self.title_var, width=50))
+
         row += 1
-        add_form_row(row, "Description:", ttk.Entry(form, textvariable=self.desc_var, width=50))
+        ttk.Label(form, text="Description:").grid(row=row, column=0, sticky="nw", **padding)
+        self.desc_text = tk.Text(form, width=50, height=5, wrap="word", font=("Segoe UI", 10))
+        self.desc_text.grid(row=row, column=1, columnspan=2, sticky="ew", **padding)
+
         row += 1
         add_form_row(row, "Email:", ttk.Entry(form, textvariable=self.email_var, width=50))
         row += 1
@@ -64,8 +67,7 @@ class LandingPageApp:
         ttk.Label(form, text="Links (Add multiple):").grid(row=row, column=0, sticky="w", **padding)
         self.links_container = ttk.Frame(form)
         self.links_container.grid(row=row, column=1, columnspan=2, sticky="nsew", **padding)
-
-        self.add_link_field()  # Add first link field
+        self.add_link_field()
 
         row += 1
         ttk.Button(form, text="+ Add Link", command=self.add_link_field).grid(row=row, column=1, sticky="w", **padding)
@@ -119,7 +121,7 @@ class LandingPageApp:
 
         data = {
             "title": self.title_var.get(),
-            "description": self.desc_var.get(),
+            "description": self.desc_text.get("1.0", "end").strip(),
             "email": self.email_var.get(),
             "phone": self.phone_var.get(),
             "links": links,
