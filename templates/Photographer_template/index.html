@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <style>
+    body, html { margin:0; padding:0; font-family: 'Segoe UI', sans-serif;
+      background: url('{{ background_image }}') center/cover no-repeat; color: #ffffff; }
+    body::before { content:""; position:fixed; inset:0; background: rgba(0,0,0,0.5); z-index:0; }
+    .main { position: relative; z-index:1; display:flex; flex-direction:column;
+            justify-content:center; align-items:center; min-height:100vh; text-align:center; padding: 20px; }
+    .logo { position: absolute; }
+    .logo img { max-width: 100px; border-radius: 5px; }
+    .logo.top-left { top:10px; left:10px; }
+    .logo.top-right { top:10px; right:10px; }
+    .logo.bottom-left { bottom:10px; left:10px; }
+    .logo.bottom-right { bottom:10px; right:10px; }
+    .logo.center { top:10px; left:50%; transform: translateX(-50%); }
+    .logo.none { display:none; }
+    h1 { font-size: 3em; margin: 0.2em 0; }
+    p.description { font-size: 1.2em; max-width: 600px; margin: 0.5em auto 1em; }
+    .links a { color: #fff; text-decoration: none; margin: 0 8px; border-bottom: 1px solid #fff; }
+    .contact { margin-top: 1em; font-size: 0.95em; }
+    .contact a { color: #fff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="logo {{ logo_position }}"><img src="{{ logo_image }}" alt="Logo"></div>
+  <div class="main">
+    <h1>{{ title }}</h1>
+    <p class="description">{{ description }}</p>
+    <div class="links">{{ links }}</div>
+    <div class="contact">
+      <p>Email: <a href="mailto:{{ email }}">{{ email }}</a></p>
+      <p>Phone: <a href="tel:{{ phone }}">{{ phone }}</a></p>
+    </div>
+  </div>
+</body>
+</html>
