@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>naor photr</title>
+  <style>
+    :root {
+      --accent: #66ccff;
+      --bg-dark: #121212;
+      --bg-light: #f9f9f9;
+      --text-dark: #ffffff;
+      --text-light: #222222;
+    }
+
+    body[data-theme="dark"] {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    body[data-theme="light"] {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 1.2rem;
+      white-space: pre-line;
+      margin-bottom: 40px;
+    }
+
+    .gallery {
+      columns: 3 300px;
+      column-gap: 20px;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item img:hover {
+      transform: scale(1.03);
+    }
+
+    .caption {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox .close,
+    .lightbox .nav {
+      position: absolute;
+      top: 20px;
+      font-size: 2rem;
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    .lightbox .close {
+      right: 30px;
+    }
+
+    .lightbox .nav.prev {
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox .nav.next {
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+  <div class="container">
+    <h1>naor photr</h1>
+    <p class="description">safdksdl;b
+dfgdhghjgjgh
+sdgfdfgdfg
+
+dfg</p>
+
+    <div class="gallery">
+      
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <img src="gallery/image_1.jpeg" alt="Gallery Image 1" />
+        
+      </div>
+      
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <img src="gallery/image_2.jpeg" alt="Gallery Image 2" />
+        <div class="caption">love</div>
+      </div>
+      
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <img src="gallery/image_3.jpeg" alt="Gallery Image 3" />
+        
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <a href="#" class="close" onclick="closeLightbox()">&times;</a>
+    <a href="#" class="nav prev" onclick="prevImage(event)">&#10094;</a>
+    <img id="lightbox-img" src="" alt="" />
+    <a href="#" class="nav next" onclick="nextImage(event)">&#10095;</a>
+  </div>
+
+  <script>
+    const images = [
+      'gallery/image_1.jpeg','gallery/image_2.jpeg','gallery/image_3.jpeg',
+    ];
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = images[currentIndex];
+      lb.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+
+    function prevImage(e) {
+      e.preventDefault();
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      document.getElementById('lightbox-img').src = images[currentIndex];
+    }
+
+    function nextImage(e) {
+      e.preventDefault();
+      currentIndex = (currentIndex + 1) % images.length;
+      document.getElementById('lightbox-img').src = images[currentIndex];
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+
+</body>
+</html>
