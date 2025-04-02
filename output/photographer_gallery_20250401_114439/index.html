@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eden Photography</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #66ccff;
+      --text-light: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+      background: url('') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-light);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: auto;
+      padding: 80px 20px 60px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.8rem;
+      margin-bottom: 20px;
+      color: var(--accent);
+      animation: slideInTop 0.9s ease;
+    }
+
+    .description {
+      font-size: 1.4rem;
+      max-width: 800px;
+      margin: 0 auto 50px;
+      white-space: pre-line;
+      animation: slideInBottom 1s ease;
+    }
+
+    .links {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeIn 1.2s ease;
+    }
+
+    .link-block a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(4px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .link-block a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .link-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      border-radius: 8px;
+      animation: fadeZoom 0.6s ease;
+    }
+
+    .link-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      animation: fadeUp 0.7s ease;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+      animation: fadeIn 1.3s ease;
+    }
+
+    .gallery-item {
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item img:hover {
+      transform: scale(1.03);
+    }
+
+    .caption {
+      margin-top: 10px;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+
+    .contact {
+      font-size: 1.3rem;
+      margin-top: 60px;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 30px;
+      border-radius: 14px;
+      display: inline-block;
+      text-align: left;
+      animation: fadeIn 1.4s ease;
+    }
+
+    .contact-item {
+      margin: 16px 0;
+    }
+
+    .contact-label {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .contact a {
+      display: block;
+      font-size: 1.2rem;
+      color: white;
+      text-decoration: underline;
+    }
+
+    .logo {
+      position: absolute;
+    }
+
+    .logo img {
+      max-width: 100px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .logo.top-left    { top: 20px; left: 20px; }
+    .logo.top-right   { top: 20px; right: 20px; }
+    .logo.middle      { top: 20px; left: 50%; transform: translateX(-50%); }
+    .logo.bottom-left { bottom: 20px; left: 20px; }
+    .logo.bottom-right{ bottom: 20px; right: 20px; }
+    .logo.none        { display: none; }
+
+    @keyframes slideInTop {
+      from { opacity: 0; transform: translateY(-50px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInBottom {
+      from { opacity: 0; transform: translateY(50px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeZoom {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo none">
+    <img src="" alt="Logo" />
+  </div>
+
+  <div class="container">
+    <h1>Eden Photography</h1>
+    <p class="description">ChatGPT said:
+A professional photographer whose goal is to capture your most beautiful moments forever.
+
+Photographs couples, individuals, businesses, families, kindergartens, and more.
+
+Come and you won’t regret it.</p>
+
+    
+    <div class="links">
+      
+      <div class="link-block">
+        <a href="https://www.instagram.com/edennnnk___?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+          <img class="link-icon" src="" alt="icon" />
+          <span class="link-title">Edenkr__</span>
+        </a>
+      </div>
+      
+    </div>
+    
+
+    <div class="gallery">
+      
+      <div class="gallery-item">
+        <img src="" alt="Image 1" />
+        
+      </div>
+      
+      <div class="gallery-item">
+        <img src="" alt="Image 2" />
+        
+      </div>
+      
+      <div class="gallery-item">
+        <img src="" alt="Image 3" />
+        
+      </div>
+      
+    </div>
+
+    <div class="contact">
+      <div class="contact-item">
+        <div class="contact-label">Email</div>
+        <a href="mailto:Edenkrr@gmail.com">Edenkrr@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">Phone</div>
+        <a href="tel:0556608798">0556608798</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

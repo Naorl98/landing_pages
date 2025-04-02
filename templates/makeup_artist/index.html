@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ea80b0;
+      --bg: #fff0f6;
+      --text: #2d2d2d;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #fff5fa, #ffe9f0), url('{{ background_image }}') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+    }
+
+    .logo {
+      position: absolute;
+    }
+
+    .logo img {
+      max-width: 100px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .logo.top-left    { top: 20px; left: 20px; }
+    .logo.top-right   { top: 20px; right: 20px; }
+    .logo.middle      { top: 20px; left: 50%; transform: translateX(-50%); }
+    .logo.bottom-left { bottom: 20px; left: 20px; }
+    .logo.bottom-right{ bottom: 20px; right: 20px; }
+    .logo.none        { display: none; }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 100px 20px 60px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      animation: fadeDown 1s ease;
+    }
+
+    .description {
+      font-size: 1.3rem;
+      max-width: 760px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+      white-space: pre-line;
+      animation: fadeUp 1.2s ease;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 60px;
+      animation: fadeIn 1.3s ease;
+    }
+
+    .link-block {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 18px 28px;
+      border-radius: 14px;
+      max-width: 480px;
+      margin: 0 auto;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+    }
+
+    .link-block img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 8px;
+      animation: popIn 0.5s ease;
+    }
+
+    .link-block a {
+      color: var(--text);
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .contact {
+      background: rgba(255, 255, 255, 0.6);
+      padding: 24px;
+      border-radius: 14px;
+      max-width: 420px;
+      margin: 50px auto 0;
+      animation: fadeIn 1.4s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+
+    .contact-item {
+      margin: 14px 0;
+      text-align: left;
+    }
+
+    .contact-label {
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .contact a {
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1); } }
+  </style>
+</head>
+<body>
+
+  <div class="logo {{ logo_position }}">
+    <img src="{{ logo_image }}" alt="Logo" />
+  </div>
+
+  <div class="container">
+    <h1>{{ title }}</h1>
+    <p class="description">{{ description }}</p>
+
+    {% if links %}
+    <div class="links">
+      {% for link in links %}
+      <div class="link-block">
+        <img src="{{ link.icon }}" alt="icon" />
+        <a href="{{ link.url }}" target="_blank">{{ link.title }}</a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="contact">
+      <div class="contact-item">
+        <div class="contact-label">Email</div>
+        <a href="mailto:{{ email }}">{{ email }}</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">Phone</div>
+        <a href="tel:{{ phone }}">{{ phone }}</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

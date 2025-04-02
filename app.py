@@ -8,7 +8,7 @@ class LandingPageApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Landing Page Creator")
-        self.root.geometry("720x1100")
+        self.root.geometry("800x1150")
         self.root.configure(bg="#1a1a1a")
 
         style = ttk.Style()
@@ -68,7 +68,7 @@ class LandingPageApp:
         add_form_row(row, "Phone:", ttk.Entry(form, textvariable=self.phone_var, width=50))
 
         row += 1
-        ttk.Label(form, text="Links (Add multiple):").grid(row=row, column=0, sticky="w", **padding)
+        ttk.Label(form, text="Links (Icon + Title + URL):").grid(row=row, column=0, sticky="w", **padding)
         self.links_container = ttk.Frame(form)
         self.links_container.grid(row=row, column=1, columnspan=2, sticky="nsew", **padding)
         self.add_link_field()
@@ -115,10 +115,20 @@ class LandingPageApp:
         frame = ttk.Frame(self.links_container)
         title_var = tk.StringVar()
         url_var = tk.StringVar()
-        ttk.Entry(frame, textvariable=title_var, width=20).pack(side="left", padx=(0, 5))
-        ttk.Entry(frame, textvariable=url_var, width=30).pack(side="left")
+        icon_path = tk.StringVar()
+
+        ttk.Entry(frame, textvariable=title_var, width=18).pack(side="left", padx=(0, 5))
+        ttk.Entry(frame, textvariable=url_var, width=26).pack(side="left", padx=(0, 5))
+        ttk.Entry(frame, textvariable=icon_path, width=18).pack(side="left")
+        ttk.Button(frame, text="Browse Icon", command=lambda: self.browse_icon(icon_path)).pack(side="left", padx=(5, 0))
+
         frame.pack(pady=2, anchor="w")
-        self.link_frames.append((title_var, url_var))
+        self.link_frames.append((title_var, url_var, icon_path))
+
+    def browse_icon(self, path_var):
+        path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg")])
+        if path:
+            path_var.set(path)
 
     def browse_bg_image(self):
         path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg")])
@@ -139,11 +149,12 @@ class LandingPageApp:
 
     def generate(self):
         links = []
-        for title_var, url_var in self.link_frames:
-            link = url_var.get().strip()
+        for title_var, url_var, icon_path in self.link_frames:
             title = title_var.get().strip()
+            link = url_var.get().strip()
+            icon = icon_path.get().strip()
             if link:
-                links.append({"url": link, "title": title})
+                links.append({"url": link, "title": title, "icon": icon})
 
         data = {
             "title": self.title_var.get(),

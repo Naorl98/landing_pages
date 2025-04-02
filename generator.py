@@ -1,64 +1,47 @@
 import os
 import shutil
-import datetime
+import base64
+from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 
+
 def get_templates():
-    templates_path = os.path.join(os.getcwd(), "templates")
-    return [name for name in os.listdir(templates_path) if os.path.isdir(os.path.join(templates_path, name))]
+    return [name for name in os.listdir("templates") if os.path.isdir(os.path.join("templates", name))]
+
 
 def get_themes():
-    return ["dark", "light", "vibrant"]
+    return ["default", "light", "dark"]
+
+
+def encode_image_base64(image_path):
+    if not os.path.isfile(image_path):
+        return ""
+    with open(image_path, "rb") as img_file:
+        return "data:image/{};base64,".format(image_path.split(".")[-1]) + base64.b64encode(img_file.read()).decode("utf-8")
+
 
 def generate_landing_page(template_name, data):
+    now = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_dir = f"output/{template_name}_{now}"
+    os.makedirs(output_dir, exist_ok=True)
+
     env = Environment(loader=FileSystemLoader(f"templates/{template_name}"))
     template = env.get_template("index.html")
 
-    output_html = template.render(
-        title=data.get("title"),
-        description=data.get("description"),
-        email=data.get("email"),
-        phone=data.get("phone"),
-        links=data.get("links", []),
-        theme=data.get("theme"),
-        background_image=data.get("background_image"),
-        logo_image=data.get("logo_image"),
-        logo_position=data.get("logo_position"),
-        gallery_images=[]
-    )
+    # Convert images to base64
+    data["background_image"] = encode_image_base64(data.get("background_image", ""))
+    data["logo_image"] = encode_image_base64(data.get("logo_image", ""))
 
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_dir = os.path.join("output", f"landing_{timestamp}")
-    os.makedirs(output_dir, exist_ok=True)
+    for link in data.get("links", []):
+        link["icon"] = encode_image_base64(link.get("icon", ""))
 
-    gallery_data = []
-    if data.get("gallery_images"):
-        gallery_dir = os.path.join(output_dir, "gallery")
-        os.makedirs(gallery_dir, exist_ok=True)
-        for i, item in enumerate(data["gallery_images"]):
-            src = item.get("path")
-            caption = item.get("caption", "")
-            ext = os.path.splitext(src)[1]
-            dest_filename = f"image_{i+1}{ext}"
-            dest_path = os.path.join(gallery_dir, dest_filename)
-            shutil.copy(src, dest_path)
-            gallery_data.append({"img": f"gallery/{dest_filename}", "caption": caption})
+    for img in data.get("gallery_images", []):
+        img["img"] = encode_image_base64(img.get("path", ""))
 
-        output_html = template.render(
-            title=data.get("title"),
-            description=data.get("description"),
-            email=data.get("email"),
-            phone=data.get("phone"),
-            links=data.get("links", []),
-            theme=data.get("theme"),
-            background_image=data.get("background_image"),
-            logo_image=data.get("logo_image"),
-            logo_position=data.get("logo_position"),
-            gallery_images=gallery_data
-        )
+    rendered_html = template.render(**data)
 
-    index_path = os.path.join(output_dir, "index.html")
-    with open(index_path, "w", encoding="utf-8") as f:
-        f.write(output_html)
+    output_path = os.path.join(output_dir, "index.html")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(rendered_html)
 
-    return index_path
+    return output_path

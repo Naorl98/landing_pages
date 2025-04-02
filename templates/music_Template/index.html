@@ -1,10 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4c4c;
+      --bg: #0d0d0d;
+      --text: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 100px 20px 60px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 4rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      animation: fadeIn 1s ease;
+    }
+
+    .description {
+      font-size: 1.5rem;
+      max-width: 760px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+      white-space: pre-line;
+      animation: fadeIn 1.2s ease;
+    }
+
+    .music-player {
+      margin: 40px 0;
+      animation: fadeIn 1.3s ease;
+    }
+
+    .tour-dates {
+      margin: 60px 0;
+      animation: fadeIn 1.4s ease;
+    }
+
+    .tour-dates h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .tour-dates ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tour-dates li {
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .merchandise {
+      margin: 60px 0;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .merchandise a {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 600;
+    }
+
+    .contact {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 24px;
+      border-radius: 14px;
+      max-width: 420px;
+      margin: 50px auto 0;
+      animation: fadeIn 1.6s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .contact-item {
+      margin: 14px 0;
+      text-align: left;
+    }
+
+    .contact-label {
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .contact a {
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
 </head>
 <body>
+
+  <div class="container">
+    <h1>{{ title }}</h1>
+    <p class="description">{{ description }}</p>
+
+    <div class="music-player">
+      <!-- Embed music player here -->
+      <iframe src="{{ music_player_url }}" width="100%" height="166" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="tour-dates">
+      <h2>Tour Dates</h2>
+      <ul>
+        {% for date in tour_dates %}
+        <li>{{ date.date }} - {{ date.venue }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="merchandise">
+      <h2>Merchandise</h2>
+      {% for item in merchandise %}
+      <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+      {% endfor %}
+    </div>
+
+    <div class="contact">
+      <div class="contact-item">
+        <div class="contact-label">Email</div>
+        <a href="mailto:{{ email }}">{{ email }}</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">Phone</div>
+        <a href="tel:{{ phone }}">{{ phone }}</a>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
